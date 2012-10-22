@@ -22,46 +22,61 @@ $filterStatus = $this->state->get('filter.status');
 
 $fields = new JRegistry(JFactory::getApplication()->input->get('fields', array(), 'array'));
 
+$uri = JURI::getInstance();
+
+$quickFilters = array(
+	'COM_TRACKER_QUICK_FILTER_PRIORITY' => array(
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_ALL', 'key' => 'priority', 'value' => 0),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_HIGH' , 'key' => 'priority', 'value' => 1),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_MEDIUM_HIGH' , 'key' => 'priority', 'value' => 2),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_MEDIUM' , 'key' => 'priority', 'value' => 3),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_LOW' , 'key' => 'priority', 'value' => 4),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_PRIORITY_VERY_LOW' , 'key' => 'priority', 'value' => 5),
+	),
+	'COM_TRACKER_QUICK_FILTER_STATUS' => array(
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_ALL' , 'key' => 'status', 'value' => 0),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_OPEN' , 'key' => 'status', 'value' => 1),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_CONFIRMED' , 'key' => 'status', 'value' => 2),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_PENDING' , 'key' => 'status', 'value' => 3),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_RTC' , 'key' => 'status', 'value' => 4),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_STATUS_FIXED' , 'key' => 'status', 'value' => 5),
+	),
+	'COM_TRACKER_QUICK_FILTER_OPENDATE' => array(
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_ALL' , 'key' => 'opendate', 'value' => 'all'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_TODAY' , 'key' => 'opendate', 'value' => 'today'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_THISWEEK' , 'key' => 'opendate', 'value' => 'thisweek'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_THISMONTH' , 'key' => 'opendate', 'value' => 'thismonth'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_LAST3' , 'key' => 'opendate', 'value' => 'last3'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_OPENDATE_LAST6' , 'key' => 'opendate', 'value' => 'last6'),
+	),
+	'COM_TRACKER_QUICK_FILTER_THAT' => array(
+		array('name' => 'COM_TRACKER_QUICK_FILTER_THAT_I_CREATED' , 'key' => 'that', 'value' => 'icreated'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_THAT_I_COMMENTED' , 'key' => 'that', 'value' => 'icommented'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_THAT_NO_COMMENTS' , 'key' => 'that', 'value' => 'havenocomment'),
+		array('name' => 'COM_TRACKER_QUICK_FILTER_THAT_RESET' , 'key' => 'that', 'value' => 'nothing')
+	)
+);
+
 ?>
 
 <fieldset class="quick-filters">
     <legend>Quick filters</legend>
-    <dl>
-        <dt>Priority</dt>
-		<dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=0')?>">All</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=1')?>">High</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=2')?>">Medium high</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=3')?>">Medium</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=4')?>">Low</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&priority=5')?>">Very low</a></dd>
-    </dl>
-    <dl>
-        <dt>Status</dt>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=0')?>">All</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=1')?>">Open</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=2')?>">Confirmed</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=3')?>">Pending</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=4')?>">Ready to commit</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&status=5')?>">Fixed</a></dd>
-    </dl>
-    <dl>
-        <dt>Open date</dt>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=all')?>">Today</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=today')?>">Today</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=thisweek')?>">This week</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=thismonth')?>">This month</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=last3')?>">Last 3 months</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&opendate=last6')?>">Last 6 months</a></dd>
-    </dl>
-    <dl>
-        <dt>Issues that</dt>
 
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&that=icreated')?>">I created</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&that=icommented')?>">I joined</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&that=havenocomment')?>">Nobody comment</a></dd>
-        <dd><a href="<?php echo JRoute::_('index.php?option=com_tracker&view=issues&that=nothing')?>">Reset this filter</a></dd>
-
-    </dl>
+	<?php foreach ($quickFilters as $filterName => $filterItems) : ?>
+		<dl>
+			<dt><?php echo JText::_($filterName) ?></dt>
+			<?php
+			foreach ($filterItems as $item) :
+				$oldVar = $uri->getVar($item['key']);
+				$uri->setVar($item['key'], $item['value']);
+			?>
+            <dd><a href="<?php echo JRoute::_($uri->__toString())?>"><?php echo JText::_($item['name']) ?></a></dd>
+			<?php
+				$uri->setVar($item['key'], $oldVar);
+			endforeach;
+			?>
+		</dl>
+	<?php endforeach; ?>
 </fieldset>
 
 <form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
@@ -203,4 +218,5 @@ $fields = new JRegistry(JFactory::getApplication()->input->get('fields', array()
 		</tbody>
 	</table>
 	<?php echo $this->pagination->getListFooter(); ?>
+	<input type="hidden" name="task" />
 </form>

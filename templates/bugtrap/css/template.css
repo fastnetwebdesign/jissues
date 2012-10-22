@@ -6519,3 +6519,13 @@ fieldset.quick-filters dl {
 	width: 25%;
 	float: left;
 }
+ul.involved {
+	margin-left: 0;
+}
+ul.involved li {
+	list-style: none;
+	margin-bottom: 5px;
+}
+ul.involved li img {
+	border-radius: 3px;
+}

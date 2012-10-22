@@ -80,6 +80,12 @@ class JGithub
 	protected $milestones;
 
 	/**
+	 * @var    JGithubUsers  GitHub API object for users.
+	 * @since  12.3
+	 */
+	protected $users;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param   JRegistry    $options  GitHub options object.
@@ -168,6 +174,15 @@ class JGithub
 				$this->milestones = new JGithubMilestones($this->options, $this->client);
 			}
 			return $this->milestones;
+		}
+
+		if ($name == 'users')
+		{
+			if ($this->users == null)
+			{
+				$this->users = new JGithubUsers($this->options, $this->client);
+			}
+			return $this->users;
 		}
 	}
 

@@ -69,8 +69,30 @@ class TrackerApplicationRetrieve extends JApplicationCli
 	 */
 	protected function getData()
 	{
+		$options = new JRegistry;
+
+		// Ask if the user wishes to authenticate to GitHub.  Advantage is increased rate limit to the API.
+		$this->out('Do you wish to authenticate to GitHub? [y]es / [n]o :', false);
+
+		$resp = trim($this->in());
+
+		if ($resp == 'y' || $resp == 'yes')
+		{
+			// Get the username
+			$this->out('Enter your GitHub username :', false);
+			$username = trim($this->in());
+
+			// Get the password
+			$this->out('Enter your GitHub password :', false);
+			$password = trim($this->in());
+
+			// Set the options
+			$options->set('api.username', $username);
+			$options->set('api.password', $password);
+		}
+
 		// Instantiate JGithub
-		$github = new JGithub;
+		$github = new JGithub($options);
 
 		try
 		{
@@ -166,7 +188,7 @@ class TrackerApplicationRetrieve extends JApplicationCli
 			$table = JTable::getInstance('Issue');
 			$table->gh_id       = $issue->number;
 			$table->title       = $issue->title;
-			$table->description = str_replace("\n", "<br>", $issue->body);
+			$table->description = $issue->body;
 			$table->status		= ($issue->state == 'open') ? 1 : 10;
 			$table->opened      = JFactory::getDate($issue->created_at)->toSql();
 

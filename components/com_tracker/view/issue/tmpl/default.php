@@ -145,9 +145,12 @@ $webserver = $this->fields->get('web_server');
 		</div>
 		<div class="span3 pull-right">
             <h4><?php echo JText::_('COM_TRACKER_LABEL_ISSUE_INVOLVED_PEOPLE'); ?></h4>
-        	<ul>
+        	<ul class="involved">
 				<?php foreach ($this->involvedPeople as $people) : ?>
-				<li><a href="https://github.com/<?php echo $people->submitter ?>"><?php echo $people->submitter ?></a></li>
+				<li>
+					<img src="<?php echo $people->avatar_url ?>" alt="<?php echo $people->submitter ?>" width="50" height="50"/>
+					<a href="https://github.com/<?php echo $people->submitter ?>"><?php echo $people->submitter ?></a>
+				</li>
 				<?php endforeach ?>
             </ul>
 		</div>

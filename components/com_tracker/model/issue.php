@@ -23,7 +23,7 @@ class TrackerModelIssue extends JModelDatabase
 	 *
 	 * @param   integer  $id  The id of the primary key.
 	 *
-	 * @return  mixed  An array of data items on success, false on failure.
+	 * @return  array  An array of data items on success, false on failure.
 	 *
 	 * @since   1.0
 	 */
@@ -44,7 +44,7 @@ class TrackerModelIssue extends JModelDatabase
 		catch (RuntimeException $e)
 		{
 			JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
-			return false;
+			return array();
 		}
 
 		return $items;
@@ -141,6 +141,14 @@ class TrackerModelIssue extends JModelDatabase
 		{
 			$db->setQuery($query);
 			$lists = $db->loadObjectList();
+
+			$github = new JGithub();
+
+			foreach ($lists as $item)
+			{
+				$githubUserDetails = $github->users->get($item->submitter);
+				$item->avatar_url = $githubUserDetails->avatar_url;
+			}
 		}
 		catch (RuntimeException $e)
 		{
